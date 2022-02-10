@@ -23,6 +23,23 @@ const CourseUnitSchema = mongoose.Schema({
 
 id(CourseUnitSchema);
 
-const CourseUnit = new mongoose.model("course_units", CourseUnitSchema);
+const CourseUnit = new mongoose.model("Course_units", CourseUnitSchema);
 
-module.exports = { CourseUnit };
+//user
+const UserSchema = mongoose.Schema({
+  name: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+});
+
+id(UserSchema);
+
+const User = new mongoose.model("Users", UserSchema);
+
+module.exports = { CourseUnit, User };
