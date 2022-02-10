@@ -16,7 +16,7 @@ router.post("/new", async (req, res) => {
         const saved_user = await user.save();
         res.send({
           status: true,
-          data: "User Added Successfully",
+          data: "successful",
           result: saved_user,
         });
       } catch (error) {
