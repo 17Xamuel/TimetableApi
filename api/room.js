@@ -1,24 +1,25 @@
 const router = require("express").Router();
-const { CourseUnit } = require("../models/Models");
+const { Room } = require("../models/Models");
 
 //new
 router.post("/new", async (req, res) => {
-  const course_unit_check = await CourseUnit.findOne({
-    course_unit_name: { $eq: req.body.course_unit_name },
+  const room_check = await Room.findOne({
+    room_name: { $eq: req.body.room_name },
   });
-  if (course_unit_check) {
-    res.send({ data: "Course Unit Exists", status: false });
+  if (room_check) {
+    res.send({ data: "Room Exists", status: false });
   } else {
-    const course_unit = new CourseUnit({
-      course_unit_name: req.body.course_unit_name,
-      credit_units: parseInt(req.body.credit_units),
+    const room = new Room({
+      room_name: req.body.room_name,
+      room_type: req.body.room_type,
+      room_faculty: req.body.room_faculty,
     });
     try {
-      const saved_course_unit = await course_unit.save();
+      const saved_room = await room.save();
       res.send({
         status: true,
-        data: "CourseUnit Added Successfully",
-        result: saved_course_unit,
+        data: "Room Added Successfully",
+        result: saved_room,
       });
     } catch (error) {
       console.log(error);
@@ -34,8 +35,8 @@ router.post("/new", async (req, res) => {
 //all
 router.get("/all", async (req, res) => {
   try {
-    const course_units = await CourseUnit.find();
-    res.send(course_units);
+    const rooms = await Room.find();
+    res.send(rooms);
   } catch (error) {
     console.log(error);
     res.send({
@@ -49,8 +50,8 @@ router.get("/all", async (req, res) => {
 //one
 router.get("/:id", async (req, res) => {
   try {
-    const course_unit = await CourseUnit.findOne({ _id: req.params.id });
-    res.send(course_unit);
+    const room = await Room.findOne({ _id: req.params.id });
+    res.send(room);
   } catch (error) {
     console.log(error);
     res.send({
@@ -64,13 +65,11 @@ router.get("/:id", async (req, res) => {
 //delete
 router.delete("/:id", async (req, res) => {
   try {
-    const removed_course_unit = await CourseUnit.deleteOne({
-      _id: req.body.req.params.id,
-    });
+    const removed_room = await Room.deleteOne({ _id: req.body.req.params.id });
     res.send({
       status: true,
       data: "deleted",
-      result: removed_course_unit,
+      result: removed_room,
     });
   } catch (error) {
     console.log(error);

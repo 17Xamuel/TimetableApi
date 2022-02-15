@@ -71,4 +71,34 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//all
+router.get("/all", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
+//one
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id });
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
 module.exports = router;

@@ -42,4 +42,35 @@ id(UserSchema);
 
 const User = new mongoose.model("Users", UserSchema);
 
+//class
+const ClassSchema = new mongoose.Schema({
+  class_code: {
+    type: String,
+  },
+  faculty: {
+    type: String,
+  },
+});
+
+id(ClassSchema);
+
+const Class = new mongoose.model("Classes", ClassSchema);
+
+//room
+const RoomSchema = new mongoose.Schema({
+  room_name: {
+    type: String,
+  },
+  room_type: {
+    type: String,
+  },
+  room_faculty: {
+    type: String,
+  },
+});
+
+id(RoomSchema);
+
+const Room = new mongoose.model("Rooms", RoomSchema);
+
 module.exports = { CourseUnit, User };

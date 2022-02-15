@@ -1,24 +1,24 @@
 const router = require("express").Router();
-const { CourseUnit } = require("../models/Models");
+const { Class } = require("../models/Models");
 
 //new
 router.post("/new", async (req, res) => {
-  const course_unit_check = await CourseUnit.findOne({
-    course_unit_name: { $eq: req.body.course_unit_name },
+  const class_check = await Class.findOne({
+    class_code: { $eq: req.body.class_code },
   });
-  if (course_unit_check) {
-    res.send({ data: "Course Unit Exists", status: false });
+  if (class_check) {
+    res.send({ data: "Class Exists", status: false });
   } else {
-    const course_unit = new CourseUnit({
-      course_unit_name: req.body.course_unit_name,
-      credit_units: parseInt(req.body.credit_units),
+    const new_class = new Class({
+      class_code: req.body.class_code,
+      faculty: req.body.faculty,
     });
     try {
-      const saved_course_unit = await course_unit.save();
+      const saved_class = await new_class.save();
       res.send({
         status: true,
-        data: "CourseUnit Added Successfully",
-        result: saved_course_unit,
+        data: "Class Added Successfully",
+        result: saved_class,
       });
     } catch (error) {
       console.log(error);
@@ -34,8 +34,8 @@ router.post("/new", async (req, res) => {
 //all
 router.get("/all", async (req, res) => {
   try {
-    const course_units = await CourseUnit.find();
-    res.send(course_units);
+    const classes = await Class.find();
+    res.send(classes);
   } catch (error) {
     console.log(error);
     res.send({
@@ -49,8 +49,8 @@ router.get("/all", async (req, res) => {
 //one
 router.get("/:id", async (req, res) => {
   try {
-    const course_unit = await CourseUnit.findOne({ _id: req.params.id });
-    res.send(course_unit);
+    const one_class = await Class.findOne({ _id: req.params.id });
+    res.send(one_class);
   } catch (error) {
     console.log(error);
     res.send({
@@ -64,13 +64,11 @@ router.get("/:id", async (req, res) => {
 //delete
 router.delete("/:id", async (req, res) => {
   try {
-    const removed_course_unit = await CourseUnit.deleteOne({
-      _id: req.body.req.params.id,
-    });
+    const removed_class = await Class.deleteOne({ _id: req.params.id });
     res.send({
       status: true,
       data: "deleted",
-      result: removed_course_unit,
+      result: removed_class,
     });
   } catch (error) {
     console.log(error);
