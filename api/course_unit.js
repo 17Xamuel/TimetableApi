@@ -65,7 +65,7 @@ router.get("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const removed_course_unit = await CourseUnit.deleteOne({
-      _id: req.body.req.params.id,
+      _id: req.params.id,
     });
     res.send({
       status: true,
