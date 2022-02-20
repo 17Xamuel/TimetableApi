@@ -17,7 +17,7 @@ router.post("/new", async (req, res) => {
       const saved_course_unit = await course_unit.save();
       res.send({
         status: true,
-        data: "CourseUnit Added Successfully",
+        data: "Course Unit Added Successfully",
         result: saved_course_unit,
       });
     } catch (error) {
