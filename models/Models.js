@@ -73,4 +73,4 @@ id(RoomSchema);
 
 const Room = new mongoose.model("Rooms", RoomSchema);
 
-module.exports = { CourseUnit, User };
+module.exports = { CourseUnit, User, Class, Room };

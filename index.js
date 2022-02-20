@@ -8,7 +8,7 @@ const app = express();
 //middlewares
 app.use(cors());
 app.use(express.json());
-app.use("/api/user/", require("./api/user"));
+app.use("/api/users/", require("./api/user"));
 app.use("/api/rooms/", require("./api/room"));
 app.use("/api/class/", require("./api/class"));
 app.use("/api/course_unit/", require("./api/course_unit"));
