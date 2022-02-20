@@ -63,7 +63,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //delete
-router.delete("/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const removed_room = await Room.deleteOne({ _id: req.params.id });
     res.send({
