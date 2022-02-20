@@ -101,4 +101,23 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//delete
+router.delete("/:id", async (req, res) => {
+  try {
+    const removed_user = await User.deleteOne({ _id: req.params.id });
+    res.send({
+      status: true,
+      data: "deleted",
+      result: removed_user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
 module.exports = router;
