@@ -3,6 +3,7 @@ const { CourseUnit } = require("../models/Models");
 
 //new
 router.post("/new", async (req, res) => {
+  console.log(req.body);
   const course_unit_check = await CourseUnit.findOne({
     course_unit_name: { $eq: req.body.course_unit_name },
   });
@@ -11,7 +12,10 @@ router.post("/new", async (req, res) => {
   } else {
     const course_unit = new CourseUnit({
       course_unit_name: req.body.course_unit_name,
-      credit_units: parseInt(req.body.credit_units),
+      credit_units: parseInt(req.body.course_unit_credit_units),
+      course_unit_teacher: req.body.course_unit_teacher,
+      course_unit_room: req.body.select_room,
+      course_unit_codes: JSON.stringify(req.body.course_unit_codes),
     });
     try {
       const saved_course_unit = await course_unit.save();

@@ -16,8 +16,17 @@ const CourseUnitSchema = mongoose.Schema({
   course_unit_name: {
     type: String,
   },
-  credit_units: {
+  course_unit_credit_units: {
     type: Number,
+  },
+  course_unit_teacher: {
+    type: String,
+  },
+  course_unit_room: {
+    type: String,
+  },
+  course_unit_codes: {
+    type: String,
   },
 });
 
