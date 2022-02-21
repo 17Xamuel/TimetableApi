@@ -27,13 +27,16 @@ const CourseUnit = new mongoose.model("Course_units", CourseUnitSchema);
 
 //user
 const UserSchema = mongoose.Schema({
-  name: {
+  user_name: {
     type: String,
   },
-  email: {
+  user_email: {
     type: String,
   },
-  password: {
+  user_password: {
+    type: String,
+  },
+  user_faculty: {
     type: String,
   },
 });

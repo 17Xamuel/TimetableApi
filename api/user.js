@@ -3,14 +3,17 @@ const { User } = require("../models/Models");
 
 //new user
 router.post("/new", async (req, res) => {
-  const user_check = await User.findOne({ email: { $eq: req.body.email } });
+  const user_check = await User.findOne({
+    user_email: { $eq: req.body.user_email },
+  });
   if (!req.body.active) {
     if (user_check) {
       res.send({ data: "User Exists", status: false });
     } else {
       const user = new User({
-        name: req.body.name,
-        email: req.body.email,
+        user_name: req.body.user_name,
+        user_email: req.body.user_email,
+        user_faculty: req.body.user_faculty,
       });
       try {
         const saved_user = await user.save();
@@ -31,12 +34,12 @@ router.post("/new", async (req, res) => {
   } else {
     try {
       const update_user = await User.updateOne(
-        { email: req.body.email },
+        { user_email: req.body.user_email },
         {
           $set: {
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
+            user_name: req.body.user_name,
+            user_email: req.body.user_email,
+            user_password: req.body.user_password,
           },
         }
       );
@@ -102,7 +105,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //delete
-router.delete("/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const removed_user = await User.deleteOne({ _id: req.params.id });
     res.send({

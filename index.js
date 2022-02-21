@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/api/users/", require("./api/user"));
 app.use("/api/rooms/", require("./api/room"));
 app.use("/api/class/", require("./api/class"));
-app.use("/api/course_unit/", require("./api/course_unit"));
+app.use("/api/course-units/", require("./api/course_unit"));
 
 conn();
 
