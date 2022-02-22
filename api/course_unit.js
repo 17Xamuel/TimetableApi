@@ -9,9 +9,18 @@ router.post("/new", async (req, res) => {
   if (course_unit_check) {
     res.send({ data: "Course Unit Exists", status: false });
   } else {
+    const codes = [];
+    Object.keys(req.body).forEach((key) => {
+      if (key.substring(12, 15) === "cod") {
+        codes.push(req.body[key]);
+      }
+    });
     const course_unit = new CourseUnit({
       course_unit_name: req.body.course_unit_name,
-      credit_units: parseInt(req.body.credit_units),
+      credit_units: parseInt(req.body.course_unit_credit_units),
+      course_unit_teacher: req.body.course_unit_teacher,
+      course_unit_room: req.body.course_unit_room,
+      course_unit_codes: JSON.stringify(codes),
     });
     try {
       const saved_course_unit = await course_unit.save();
