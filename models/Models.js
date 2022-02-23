@@ -62,6 +62,9 @@ const ClassSchema = new mongoose.Schema({
   faculty: {
     type: String,
   },
+  study_time: {
+    type: String,
+  },
 });
 
 id(ClassSchema);
