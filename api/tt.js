@@ -6,7 +6,6 @@ class TimeTable {
   constructor(config) {
     this.config = config;
   }
-
   tt = {
     monday: {
       8_9: {
