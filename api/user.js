@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { User } = require("../models/Models");
+const { User, Class, CourseUnit, Room } = require("../models/Models");
+const { TimeTableWeekDay } = require("./timetable");
 
 //new user
 router.post("/new", async (req, res) => {
@@ -121,6 +122,36 @@ router.delete("/delete/:id", async (req, res) => {
       result: error,
     });
   }
+});
+
+router.post("/admin/generate", async (req, res) => {
+  const config = {};
+  try {
+    const classes = await Class.find();
+    const course_units = await CourseUnit.find();
+    const teachers = User.find();
+    const rooms = Room.find();
+    config.classes = classes || [];
+    config.course_units = course_units || [];
+    config.teachers = teachers || [];
+    config.rooms = rooms || [];
+
+    const tt_weekday = new TimeTableWeekDay(config);
+
+    const tt_try = tt_weekday.timeTableWeekDay;
+    console.log(tt_try);
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
+router.put("/admin/clear", async (req, res) => {
+  res.send("Cleared");
 });
 
 module.exports = router;

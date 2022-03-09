@@ -28,6 +28,9 @@ const CourseUnitSchema = mongoose.Schema({
   course_unit_codes: {
     type: String,
   },
+  course_unit_semester: {
+    type: String,
+  },
 });
 
 id(CourseUnitSchema);
@@ -62,7 +65,7 @@ const ClassSchema = new mongoose.Schema({
   faculty: {
     type: String,
   },
-  study_time: {
+  class_course_units: {
     type: String,
   },
 });

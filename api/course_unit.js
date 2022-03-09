@@ -21,6 +21,7 @@ router.post("/new", async (req, res) => {
       course_unit_teacher: req.body.course_unit_teacher,
       course_unit_room: req.body.course_unit_room,
       course_unit_codes: JSON.stringify(codes),
+      course_unit_semester: req.body.semester,
     });
     try {
       const saved_course_unit = await course_unit.save();
