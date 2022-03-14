@@ -139,7 +139,11 @@ router.post("/admin/generate", async (req, res) => {
     const tt_weekday = new TimeTableWeekDay(config);
 
     const tt_try = tt_weekday.timeTableWeekDay;
-    console.log(tt_try);
+    res.send({
+      status: true,
+      data: "Generated",
+      result: tt_try,
+    });
   } catch (error) {
     console.log(error);
     res.send({
