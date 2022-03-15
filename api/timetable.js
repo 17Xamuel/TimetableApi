@@ -26,33 +26,33 @@ class TimeTableWeekDay {
     };
     function threeCreditUnits(day, i) {
       if (day[0].length == 0 && day[1].length == 0 && day[2].length == 0) {
-        day[0].push({ course_unit: course_units[i] });
-        day[1].push({ course_unit: course_units[i] });
-        day[2].push({ course_unit: course_units[i] });
+        day[0].push(course_units[i]);
+        day[1].push(course_units[i]);
+        day[2].push(course_units[i]);
       } else if (
         day[3].length == 0 &&
         day[4].length == 0 &&
         day[5].length == 0
       ) {
-        day[3].push({ course_unit: course_units[i] });
-        day[4].push({ course_unit: course_units[i] });
-        day[5].push({ course_unit: course_units[i] });
+        day[3].push(course_units[i]);
+        day[4].push(course_units[i]);
+        day[5].push(course_units[i]);
       } else if (
         day[6].length == 0 &&
         day[7].length == 0 &&
         day[8].length == 0
       ) {
-        day[6].push({ course_unit: course_units[i] });
-        day[7].push({ course_unit: course_units[i] });
-        day[8].push({ course_unit: course_units[i] });
+        day[6].push(course_units[i]);
+        day[7].push(course_units[i]);
+        day[8].push(course_units[i]);
       } else if (
         day[2].length == 0 &&
         day[3].length == 0 &&
         day[4].length == 0
       ) {
-        day[2].push({ course_unit: course_units[i] });
-        day[3].push({ course_unit: course_units[i] });
-        day[4].push({ course_unit: course_units[i] });
+        day[2].push(course_units[i]);
+        day[3].push(course_units[i]);
+        day[4].push(course_units[i]);
       } else {
         return "dayfull";
       }
@@ -60,26 +60,26 @@ class TimeTableWeekDay {
     }
     function fourCreditUnits(day, i) {
       if (day[0].length == 0 && day[1].length == 0) {
-        day[0].push({ course_unit: course_units[i] });
-        day[1].push({ course_unit: course_units[i] });
+        day[0].push(course_units[i]);
+        day[1].push(course_units[i]);
       } else if (day[2].length == 0 && day[3].length == 0) {
-        day[2].push({ course_unit: course_units[i] });
-        day[3].push({ course_unit: course_units[i] });
+        day[2].push(course_units[i]);
+        day[3].push(course_units[i]);
       } else if (day[4].length == 0 && day[5].length == 0) {
-        day[4].push({ course_unit: course_units[i] });
-        day[5].push({ course_unit: course_units[i] });
+        day[4].push(course_units[i]);
+        day[5].push(course_units[i]);
       } else if (day[6].length == 0 && day[7].length == 0) {
-        day[6].push({ course_unit: course_units[i] });
-        day[7].push({ course_unit: course_units[i] });
+        day[6].push(course_units[i]);
+        day[7].push(course_units[i]);
       } else if (day[3].length == 0 && day[4].length == 0) {
-        day[3].push({ course_unit: course_units[i] });
-        day[4].push({ course_unit: course_units[i] });
+        day[3].push(course_units[i]);
+        day[4].push(course_units[i]);
       } else if (day[7].length == 0 && day[8].length == 0) {
-        day[7].push({ course_unit: course_units[i] });
-        day[8].push({ course_unit: course_units[i] });
+        day[7].push(course_units[i]);
+        day[8].push(course_units[i]);
       } else if (day[5].length == 0 && day[6].length == 0) {
-        day[5].push({ course_unit: course_units[i] });
-        day[6].push({ course_unit: course_units[i] });
+        day[5].push(course_units[i]);
+        day[6].push(course_units[i]);
       } else {
         return "dayfull";
       }

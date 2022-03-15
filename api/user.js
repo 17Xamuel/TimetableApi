@@ -129,8 +129,8 @@ router.post("/admin/generate", async (req, res) => {
   try {
     const classes = await Class.find();
     const course_units = await CourseUnit.find();
-    const teachers = User.find();
-    const rooms = Room.find();
+    const teachers = await User.find();
+    const rooms = await Room.find();
     config.classes = classes || [];
     config.course_units = course_units || [];
     config.teachers = teachers || [];
@@ -156,6 +156,33 @@ router.post("/admin/generate", async (req, res) => {
 
 router.put("/admin/clear", async (req, res) => {
   res.send("Cleared");
+});
+
+router.get("/admin/numbers", async (req, res) => {
+  const config = {};
+  try {
+    const classes = await Class.find();
+    const course_units = await CourseUnit.find();
+    const teachers = await User.find();
+    const rooms = await Room.find();
+
+    config.classes = classes.length || 0;
+    config.course_units = course_units.length || 0;
+    config.teachers = teachers.length || 0;
+    config.rooms = rooms.length || 0;
+
+    res.send({
+      status: true,
+      data: "success",
+      result: config,
+    });
+  } catch (error) {
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
 });
 
 module.exports = router;
