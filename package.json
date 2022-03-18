@@ -1,0 +1,30 @@
+{
+  "name": "timetableapi",
+  "version": "1.0.0",
+  "description": "Api for the timetable Generation App",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XamuelUG/TimetableApi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XamuelUG/TimetableApi/issues"
+  },
+  "homepage": "https://github.com/XamuelUG/TimetableApi#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
