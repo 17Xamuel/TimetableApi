@@ -347,14 +347,14 @@ class TimeTableWeekDay {
    *
    * returns timetable for weekday
    */
-  get timeTableWeekDay() {
-    let tt = this.getTimetableForClassOne(this.config.classes[0]);
-    for (let i = 1; i < this.config.classes.length; i++) {
-      tt = this.getTimetableForClass(tt, this.config.classes[i]);
-    }
+  //   get timeTableWeekDay() {
+  //     let tt = this.getTimetableForClassOne(this.config.classes[0]);
+  //     for (let i = 1; i < this.config.classes.length; i++) {
+  //       tt = this.getTimetableForClass(tt, this.config.classes[i]);
+  //     }
 
-    return tt;
-  }
+  //     return tt;
+  //   }
 }
 
 module.exports = { TimeTableWeekDay };
