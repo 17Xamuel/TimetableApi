@@ -363,6 +363,10 @@ class TimeTableWeekDay {
   }
 
   pushCourseUnit(c, tt) {
+    const random_arr = (i) => {
+      return i[Math.floor(Math.random() * i.length)];
+    };
+
     function threeCreditUnits(day, room, teacher, cu) {
       if (cu == 1) {
         function checkFreePeriod(v) {
@@ -492,20 +496,18 @@ class TimeTableWeekDay {
       if (credit_units == 3) {
         let c_units = 3;
         function runDay3(cu) {
-          for (let k = 0; k < tt_days.length; k++) {
-            let fillDay = threeCreditUnits(
-              tt_days[k],
-              c.course_unit_room,
-              c.course_unit_teacher,
-              cu
-            );
-            if (fillDay.v == "dayfull") {
-              continue;
-            } else {
-              tt_days[k] = fillDay.v;
-              c_units = c_units === 3 ? 1 : 0;
-              break;
-            }
+          let random_day = random_arr(tt_days);
+          let fillDay = threeCreditUnits(
+            random_day,
+            c.course_unit_room,
+            c.course_unit_teacher,
+            cu
+          );
+          if (fillDay.v == "dayfull") {
+            runDay3(cu);
+          } else {
+            tt_days[tt_days.indexOf(random_day)] = fillDay.v;
+            c_units = c_units === 3 ? 1 : 0;
           }
           if (c_units == 1) {
             runDay3(1);
@@ -516,19 +518,18 @@ class TimeTableWeekDay {
       if (credit_units == 4) {
         let c_units = 4;
         function runDay4() {
-          for (let k = 0; k < tt_days.length; k++) {
-            let fillDay = fourCreditUnits(
-              tt_days[k],
-              c.course_unit_room,
-              c.course_unit_teacher
-            );
-            if (fillDay == "dayfull") {
-              continue;
-            } else {
-              tt_days[k] = fillDay;
-              c_units = c_units === 4 ? c_units - 2 : 0;
-              break;
-            }
+          const random_day = random_arr(tt_days);
+          let fillDay = fourCreditUnits(
+            random_day,
+            c.course_unit_room,
+            c.course_unit_teacher
+          );
+          if (fillDay == "dayfull") {
+            runDay4();
+          } else {
+            tt_days[tt_days.indexOf(random_day)] = fillDay;
+
+            c_units = c_units === 4 ? c_units - 2 : 0;
           }
           if (c_units == 2) {
             runDay4();
@@ -553,7 +554,7 @@ class TimeTableWeekDay {
       [[], [], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], [], []],
     ]);
-    for (let i = 0; i < this.config.course_units.length; i++) {
+    for (let i = 1; i < this.config.course_units.length; i++) {
       tt = this.pushCourseUnit(this.config.course_units[i], tt);
     }
     return tt; ///joins from the function declaration
