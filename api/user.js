@@ -1,86 +1,25 @@
 const router = require("express").Router();
-const { User, Class, CourseUnit, Room } = require("../models/Models");
+const { Teacher, Class, CourseUnit, Room, Dept } = require("../models/Models");
 const { TimeTableWeekDay } = require("./timetable");
 
-//new user
-router.post("/new", async (req, res) => {
-  const user_check = await User.findOne({
-    user_email: { $eq: req.body.user_email },
+/**
+ *
+ * New Teacher
+ */
+router.post("/teacher/new", async (req, res) => {
+  const teacher = new Teacher({
+    teacher_name: req.body.teacher_name,
+    teacher_pin: req.body.teacher_pin,
+    teacher_dept: req.body.teacher_dept,
+    teacher_available_days: JSON.stringify(req.body.days_available),
   });
-  if (!req.body.active) {
-    if (user_check) {
-      res.send({ data: "User Exists", status: false });
-    } else {
-      const user = new User({
-        user_name: req.body.user_name,
-        user_email: req.body.user_email,
-        user_faculty: req.body.user_faculty,
-        user_available_days: JSON.stringify(req.body.days_available),
-      });
-      try {
-        const saved_user = await user.save();
-        res.send({
-          status: true,
-          data: "successful",
-          result: saved_user,
-        });
-      } catch (error) {
-        console.log(error);
-        res.send({
-          status: false,
-          data: "An Error Occured",
-          result: error,
-        });
-      }
-    }
-  } else {
-    try {
-      const update_user = await User.updateOne(
-        { user_email: req.body.user_email },
-        {
-          $set: {
-            user_name: req.body.user_name,
-            user_email: req.body.user_email,
-            user_password: req.body.user_password,
-          },
-        }
-      );
-      res.send({
-        status: true,
-        data: "successful",
-        result: update_user,
-      });
-    } catch (error) {
-      console.log(error);
-      res.send({
-        status: false,
-        data: "An Error Occured",
-        result: error,
-      });
-    }
-  }
-});
-
-//user login
-router.post("/login", async (req, res) => {
   try {
-    const current_user = await User.findOne({
-      $and: [{ password: req.body.password }, { email: req.body.email }],
+    const saved_teacher = await teacher.save();
+    res.send({
+      status: true,
+      data: "successful",
+      result: saved_teacher,
     });
-    current_user
-      ? res.send({ user: current_user, status: true })
-      : res.send({ status: false, data: "Wrong Details" });
-  } catch (error) {
-    console.log(error);
-    res.send({ status: false, data: "An Error Occured", result: error });
-  }
-});
-
-//all
-router.get("/all", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.send(users);
   } catch (error) {
     console.log(error);
     res.send({
@@ -91,11 +30,98 @@ router.get("/all", async (req, res) => {
   }
 });
 
-//one
-router.get("/:id", async (req, res) => {
+/**
+ *
+ * Department Sign in
+ */
+router.post("/admin/login", async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
-    res.send(user);
+    const current_dept = await Dept.findOne({
+      $and: [{ dept_number: req.body.no }, { dept_pin: req.body.pin }],
+    });
+    const depts = await Dept.find();
+    current_dept
+      ? res.send({ dept: current_dept, status: true })
+      : res.send({ status: false, data: "Wrong Details" });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, data: "An Error Occured", result: error });
+  }
+});
+
+/**
+ *
+ * register a new department
+ */
+router.post("/depts/new", async (req, res) => {
+  const dept = new Dept({
+    dept_number: req.body.number,
+    dept_pin: req.body.pin,
+    dept_name: req.body.name,
+    dept_faculty: req.body.faculty,
+  });
+  try {
+    const saved_dept = await dept.save();
+    res.send({
+      status: true,
+      data: "successful",
+      result: saved_dept,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
+/**
+ *
+ * get all depts
+ */
+
+router.get("/depts/all", async (req, res) => {
+  try {
+    const depts = await Dept.find();
+    res.send(depts);
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
+/**
+ *
+ * Get teachers
+ */
+
+router.get("/teachers/all", async (req, res) => {
+  try {
+    const teachers = await Teacher.find();
+    res.send(teachers);
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
+/**
+ * Get one teacher
+ */
+router.get("/teacher/:id", async (req, res) => {
+  try {
+    const teacher = await Teacher.findOne({ _id: req.params.id });
+    res.send(teacher);
   } catch (error) {
     console.log(error);
     res.send({
@@ -107,13 +133,13 @@ router.get("/:id", async (req, res) => {
 });
 
 //delete
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/teacher/delete/:id", async (req, res) => {
   try {
-    const removed_user = await User.deleteOne({ _id: req.params.id });
+    const removed_teacher = await Teacher.deleteOne({ _id: req.params.id });
     res.send({
       status: true,
       data: "deleted",
-      result: removed_user,
+      result: removed_teacher,
     });
   } catch (error) {
     console.log(error);
@@ -130,7 +156,7 @@ router.post("/admin/generate", async (req, res) => {
   try {
     const classes = await Class.find();
     const course_units = await CourseUnit.find();
-    const teachers = await User.find();
+    const teachers = await Teacher.find();
     const rooms = await Room.find();
     config.classes = classes || [];
     config.course_units = course_units || [];
@@ -160,18 +186,33 @@ router.put("/admin/clear", async (req, res) => {
   res.send("Cleared");
 });
 
-router.get("/admin/numbers", async (req, res) => {
+router.get("/admin/numbers/:dept", async (req, res) => {
   const config = {};
   try {
     const classes = await Class.find();
     const course_units = await CourseUnit.find();
-    const teachers = await User.find();
+    const teachers = await Teacher.find();
     const rooms = await Room.find();
+    const depts = await Dept.find();
 
-    config.classes = classes.length || 0;
-    config.course_units = course_units.length || 0;
-    config.teachers = teachers.length || 0;
-    config.rooms = rooms.length || 0;
+    const dept = depts.find((el) => el.id == req.params.dept);
+
+    if (parseInt(dept.dept_number) == 1) {
+      config.classes = classes.length || 0;
+      config.course_units = course_units.length || 0;
+      config.teachers = teachers.length || 0;
+      config.rooms = rooms.length || 0;
+    } else {
+      config.classes = classes.filter(
+        (el) => el.class_dept == req.params.dept
+      ).length;
+      config.course_units = course_units.filter(
+        (el) => el.course_unit_dept == req.params.dept
+      ).length;
+      config.teachers = teachers.filter(
+        (el) => el.teacher_dept == req.params.dept
+      ).length;
+    }
 
     res.send({
       status: true,

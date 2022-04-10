@@ -31,6 +31,9 @@ const CourseUnitSchema = mongoose.Schema({
   course_unit_semester: {
     type: String,
   },
+  course_unit_dept: {
+    type: String,
+  },
 });
 
 id(CourseUnitSchema);
@@ -38,17 +41,14 @@ id(CourseUnitSchema);
 const CourseUnit = new mongoose.model("Course_units", CourseUnitSchema);
 
 //user
-const UserSchema = mongoose.Schema({
-  user_name: {
+const TeacherSchema = mongoose.Schema({
+  teacher_name: {
     type: String,
   },
-  user_email: {
+  teacher_pin: {
     type: String,
   },
-  user_password: {
-    type: String,
-  },
-  user_faculty: {
+  teacher_dept: {
     type: String,
   },
   user_available_days: {
@@ -56,19 +56,39 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-id(UserSchema);
+id(TeacherSchema);
 
-const User = new mongoose.model("Users", UserSchema);
+const Teacher = new mongoose.model("Teachers", TeacherSchema);
+
+//user
+const DeptSchema = mongoose.Schema({
+  dept_number: {
+    type: String,
+  },
+  dept_name: {
+    type: String,
+  },
+  dept_pin: {
+    type: String,
+  },
+  dept_faculty: {
+    type: String,
+  },
+});
+
+id(DeptSchema);
+
+const Dept = new mongoose.model("Dept", DeptSchema);
 
 //class
 const ClassSchema = new mongoose.Schema({
   class_code: {
     type: String,
   },
-  faculty: {
+  class_course_units: {
     type: String,
   },
-  class_course_units: {
+  class_dept: {
     type: String,
   },
 });
@@ -94,4 +114,4 @@ id(RoomSchema);
 
 const Room = new mongoose.model("Rooms", RoomSchema);
 
-module.exports = { CourseUnit, User, Class, Room };
+module.exports = { CourseUnit, Teacher, Class, Room, Dept };

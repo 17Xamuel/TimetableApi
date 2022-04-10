@@ -112,7 +112,7 @@ class TimeTableWeekDay_1 {
       const teacher_days = JSON.parse(
         this.config.teachers.find(
           (v) => v.id == course_units[i].course_unit_teacher
-        ).user_available_days
+        ).teacher_available_days
       );
       const credit_units = course_units[i].credit_units;
       if (course_units[i].course_unit_room === "Field") {
@@ -274,7 +274,7 @@ class TimeTableWeekDay_1 {
       let teacher_days = JSON.parse(
         this.config.teachers.find(
           (v) => v.id == course_units[i].course_unit_teacher
-        ).user_available_days
+        ).teacher_available_days
       );
 
       if (parseInt(teacher_days[0].i) == 7) {
@@ -483,7 +483,7 @@ class TimeTableWeekDay {
 
     let teacher_days = JSON.parse(
       this.config.teachers.find((v) => v.id == c.course_unit_teacher)
-        .user_available_days
+        .teacher_available_days
     );
 
     let tt_days =
