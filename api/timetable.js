@@ -363,136 +363,149 @@ class TimeTableWeekDay {
   }
 
   pushCourseUnit(c, tt) {
-    const random_arr = (i) => {
-      return i[Math.floor(Math.random() * i.length)];
-    };
+    let tt_error_check = tt;
+    try {
+      const random_arr = (i) => {
+        return i[Math.floor(Math.random() * i.length)];
+      };
 
-    function threeCreditUnits(day, room, teacher, cu) {
-      if (cu == 1) {
-        function checkFreePeriod(v) {
-          if (
-            !day[v].find((el) => el.course_unit_room === room) &&
-            !day[v].find((el) => el.course_unit_teacher === teacher)
-          ) {
-            return true;
+      function threeCreditUnits(day, room, teacher, cu) {
+        if (cu == 1) {
+          function checkFreePeriod(v) {
+            if (
+              !day[v].find((el) => el.course_unit_room === room) &&
+              !day[v].find((el) => el.course_unit_teacher === teacher)
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+
+          let loop_stop = false;
+          for (let loop_value = 0; loop_value < 9; loop_value++) {
+            if (checkFreePeriod(loop_value)) {
+              day[loop_value].push(c);
+              loop_stop = true;
+              break;
+            }
+          }
+          if (loop_stop) {
+            return { v: day, rem: 0 };
           } else {
-            return false;
+            return { v: "dayfull", rem: 1 };
           }
-        }
-
-        let loop_stop = false;
-        for (let loop_value = 0; loop_value < 9; loop_value++) {
-          if (checkFreePeriod(loop_value)) {
-            day[loop_value].push(c);
-            loop_stop = true;
-            break;
-          }
-        }
-        if (loop_stop) {
-          return { v: day, rem: 0 };
         } else {
-          return { v: "dayfull", rem: 1 };
+          function checkFreeTime(v) {
+            if (
+              !day[v[0]].find((el) => el.course_unit_room === room) &&
+              !day[v[1]].find((el) => el.course_unit_room === room) &&
+              !day[v[2]].find((el) => el.course_unit_room === room) &&
+              !day[v[0]].find((el) => el.course_unit_teacher === teacher) &&
+              !day[v[1]].find((el) => el.course_unit_teacher === teacher) &&
+              !day[v[2]].find((el) => el.course_unit_teacher === teacher)
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if (checkFreeTime([0, 1, 2])) {
+            day[0].push(c);
+            day[1].push(c);
+            day[2].push(c);
+          } else if (checkFreeTime([3, 4, 5])) {
+            day[3].push(c);
+            day[4].push(c);
+            day[5].push(c);
+          } else if (checkFreeTime([6, 7, 8])) {
+            day[6].push(c);
+            day[7].push(c);
+            day[8].push(c);
+          } else if (checkFreeTime([2, 3, 4])) {
+            day[2].push(c);
+            day[3].push(c);
+            day[4].push(c);
+          } else if (checkFreeTime([1, 2, 3])) {
+            day[1].push(c);
+            day[2].push(c);
+            day[3].push(c);
+          } else if (checkFreeTime([4, 5, 6])) {
+            day[4].push(c);
+            day[5].push(c);
+            day[6].push(c);
+          } else if (checkFreeTime([5, 6, 7])) {
+            day[5].push(c);
+            day[6].push(c);
+            day[7].push(c);
+          } else {
+            let rem_ = fourCreditUnits(day, room, teacher);
+            return {
+              v: rem_,
+              rem: rem_ == "dayfull" ? 3 : 1,
+            };
+          }
+          return { v: day, rem: 0 };
         }
-      } else {
+      }
+      function fourCreditUnits(day, room, teacher) {
         function checkFreeTime(v) {
           if (
             !day[v[0]].find((el) => el.course_unit_room === room) &&
             !day[v[1]].find((el) => el.course_unit_room === room) &&
-            !day[v[2]].find((el) => el.course_unit_room === room) &&
             !day[v[0]].find((el) => el.course_unit_teacher === teacher) &&
-            !day[v[1]].find((el) => el.course_unit_teacher === teacher) &&
-            !day[v[2]].find((el) => el.course_unit_teacher === teacher)
+            !day[v[1]].find((el) => el.course_unit_teacher === teacher)
           ) {
             return true;
           } else {
             return false;
           }
         }
-        if (checkFreeTime([0, 1, 2])) {
+
+        if (checkFreeTime([0, 1])) {
           day[0].push(c);
           day[1].push(c);
+        } else if (checkFreeTime([2, 3])) {
           day[2].push(c);
-        } else if (checkFreeTime([3, 4, 5])) {
           day[3].push(c);
+        } else if (checkFreeTime([4, 5])) {
           day[4].push(c);
           day[5].push(c);
-        } else if (checkFreeTime([6, 7, 8])) {
+        } else if (checkFreeTime([6, 7])) {
           day[6].push(c);
           day[7].push(c);
-          day[8].push(c);
-        } else if (checkFreeTime([2, 3, 4])) {
-          day[2].push(c);
+        } else if (checkFreeTime([3, 4])) {
           day[3].push(c);
           day[4].push(c);
+        } else if (checkFreeTime([7, 8])) {
+          day[7].push(c);
+          day[8].push(c);
+        } else if (checkFreeTime([5, 6])) {
+          day[5].push(c);
+          day[6].push(c);
+        } else if (checkFreeTime([1, 2])) {
+          day[1].push(c);
+          day[2].push(c);
         } else {
-          return {
-            v:
-              fourCreditUnits(day, room, teacher) == "dayfull"
-                ? "dayfull"
-                : fourCreditUnits(day, room, teacher),
-            rem: fourCreditUnits(day, room, teacher) == "dayfull" ? 3 : 1,
-          };
+          return "dayfull";
         }
-        return { v: day, rem: 0 };
-      }
-    }
-    function fourCreditUnits(day, room, teacher) {
-      function checkFreeTime(v) {
-        if (
-          !day[v[0]].find((el) => el.course_unit_room === room) &&
-          !day[v[1]].find((el) => el.course_unit_room === room) &&
-          !day[v[0]].find((el) => el.course_unit_teacher === teacher) &&
-          !day[v[1]].find((el) => el.course_unit_teacher === teacher)
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+        return day;
+        /**
+         *
+         * functions for class proceeding
+         */
       }
 
-      if (checkFreeTime([0, 1])) {
-        day[0].push(c);
-        day[1].push(c);
-      } else if (checkFreeTime([2, 3])) {
-        day[2].push(c);
-        day[3].push(c);
-      } else if (checkFreeTime([4, 5])) {
-        day[4].push(c);
-        day[5].push(c);
-      } else if (checkFreeTime([6, 7])) {
-        day[6].push(c);
-        day[7].push(c);
-      } else if (checkFreeTime([3, 4])) {
-        day[3].push(c);
-        day[4].push(c);
-      } else if (checkFreeTime([7, 8])) {
-        day[7].push(c);
-        day[8].push(c);
-      } else if (checkFreeTime([5, 6])) {
-        day[5].push(c);
-        day[6].push(c);
-      } else {
-        return "dayfull";
-      }
-      return day;
-      /**
-       *
-       * functions for class proceeding
-       */
-    }
+      let teacher_days = JSON.parse(
+        this.config.teachers.find((v) => v.id == c.course_unit_teacher)
+          .teacher_available_days
+      );
 
-    let teacher_days = JSON.parse(
-      this.config.teachers.find((v) => v.id == c.course_unit_teacher)
-        .teacher_available_days
-    );
-
-    let tt_days =
-      parseInt(teacher_days[0].i) == 7
-        ? tt
-        : tt.filter((el, i) => Boolean(teacher_days.find((el) => el.i == i)));
-    const credit_units = parseInt(c.credit_units);
-    if (c.course_unit_room === "Field") {
-    } else {
+      let tt_days =
+        parseInt(teacher_days[0].i) == 7
+          ? tt
+          : tt.filter((el, i) => Boolean(teacher_days.find((el) => el.i == i)));
+      const credit_units = parseInt(c.credit_units);
       if (credit_units == 3) {
         let c_units = 3;
         function runDay3(cu) {
@@ -507,7 +520,7 @@ class TimeTableWeekDay {
             runDay3(cu);
           } else {
             tt_days[tt_days.indexOf(random_day)] = fillDay.v;
-            c_units = c_units === 3 ? 1 : 0;
+            c_units = fillDay.rem;
           }
           if (c_units == 1) {
             runDay3(1);
@@ -528,7 +541,6 @@ class TimeTableWeekDay {
             runDay4();
           } else {
             tt_days[tt_days.indexOf(random_day)] = fillDay;
-
             c_units = c_units === 4 ? c_units - 2 : 0;
           }
           if (c_units == 2) {
@@ -537,27 +549,38 @@ class TimeTableWeekDay {
         }
         runDay4();
       }
-    }
 
-    for (let i = 0; i < tt_days; i++) {
-      tt[tt.indexOf(tt_days[i])] = tt_days;
-    }
+      for (let i = 0; i < tt_days; i++) {
+        tt[tt.indexOf(tt_days[i])] = tt_days[i];
+      }
 
-    return tt;
+      return { timetable: tt, err: false };
+    } catch (error) {
+      console.log(error);
+      return { timetable: tt_error_check, err: true };
+    }
   }
 
   get timeTableWeekDay() {
-    let tt = this.pushCourseUnit(this.config.course_units[0], [
+    let course_units = this.config.course_units.filter(
+      (el) => el.course_unit_semester === this.config.semester
+    );
+    let missed_course_units = [];
+    let tt = this.pushCourseUnit(course_units[0], [
       [[], [], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], [], []],
       [[], [], [], [], [], [], [], [], []],
     ]);
-    for (let i = 1; i < this.config.course_units.length; i++) {
-      tt = this.pushCourseUnit(this.config.course_units[i], tt);
+    for (let i = 1; i < course_units.length; i++) {
+      if (tt.err) {
+        missed_course_units.push(course_units[i - 1]);
+      } else {
+        tt = this.pushCourseUnit(course_units[i], tt.timetable);
+      }
     }
-    return tt; ///joins from the function declaration
+    return { timetable: tt, missed_course_units };
   }
 }
 module.exports = { TimeTableWeekDay };

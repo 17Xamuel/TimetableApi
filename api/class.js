@@ -13,6 +13,7 @@ router.post("/new", async (req, res) => {
       class_code: req.body.class_code,
       class_course_units: JSON.stringify(req.body.class_course_units),
       class_dept: req.body.class_dept,
+      class_study_time: req.body.study_time,
     });
     try {
       const saved_class = await new_class.save();

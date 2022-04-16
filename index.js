@@ -15,6 +15,10 @@ app.use("/api/course-units/", require("./api/course_unit"));
 
 conn();
 
+app.get("/", (req, res) => {
+  res.send("Home");
+});
+
 app.listen(PORT, () => {
   console.log(`Server Listening on PORT ${PORT}`);
 });

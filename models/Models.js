@@ -51,7 +51,7 @@ const TeacherSchema = mongoose.Schema({
   teacher_dept: {
     type: String,
   },
-  user_available_days: {
+  teacher_available_days: {
     type: String,
   },
 });
@@ -97,7 +97,10 @@ id(ClassSchema);
 
 const Class = new mongoose.model("Classes", ClassSchema);
 
-//room
+/**
+ *
+ * Rooms Schema
+ */
 const RoomSchema = new mongoose.Schema({
   room_name: {
     type: String,
@@ -114,4 +117,27 @@ id(RoomSchema);
 
 const Room = new mongoose.model("Rooms", RoomSchema);
 
-module.exports = { CourseUnit, Teacher, Class, Room, Dept };
+/**
+ *
+ *Generated Timetable
+ */
+const Tt = new mongoose.Schema({
+  tt: {
+    type: String,
+  },
+  missed: {
+    type: String,
+  },
+  academic_year: {
+    type: String,
+  },
+  semester: {
+    type: String,
+  },
+});
+
+id(Tt);
+
+const Timetable = new mongoose.model("Timetable", Tt);
+
+module.exports = { CourseUnit, Teacher, Class, Room, Dept, Timetable };

@@ -1,5 +1,12 @@
 const router = require("express").Router();
-const { Teacher, Class, CourseUnit, Room, Dept } = require("../models/Models");
+const {
+  Teacher,
+  Class,
+  CourseUnit,
+  Room,
+  Dept,
+  Timetable,
+} = require("../models/Models");
 const { TimeTableWeekDay } = require("./timetable");
 
 /**
@@ -19,6 +26,41 @@ router.post("/teacher/new", async (req, res) => {
       status: true,
       data: "successful",
       result: saved_teacher,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
+});
+
+/**
+ *
+ * Edit a teacher....
+ */
+
+router.post("/teacher/edit", async (req, res) => {
+  try {
+    const updated_teacher = await Teacher.updateOne(
+      {
+        _id: req.body.teacher_id,
+      },
+      {
+        $set: {
+          teacher_name: req.body.teacher_name,
+          teacher_pin: req.body.teacher_pin,
+          teacher_dept: req.body.teacher_dept,
+          teacher_available_days: JSON.stringify(req.body.days_available),
+        },
+      }
+    );
+    res.send({
+      status: true,
+      data: "successful",
+      result: updated_teacher,
     });
   } catch (error) {
     console.log(error);
@@ -162,15 +204,25 @@ router.post("/admin/generate", async (req, res) => {
     config.course_units = course_units || [];
     config.teachers = teachers || [];
     config.rooms = rooms || [];
+    config.semester = req.body.semester;
 
     const tt_weekday = new TimeTableWeekDay(config);
 
-    const tt_try = tt_weekday.timeTableWeekDay;
+    const tt = tt_weekday.timeTableWeekDay;
+
+    const generated_tt = new Timetable({
+      tt: JSON.stringify(tt.timetable),
+      missed: JSON.stringify(tt.missed_course_units),
+      academic_year: req.body.academic_year,
+      semester: req.body.semester,
+    });
+
+    const saved_tt = await generated_tt.save();
 
     res.send({
       status: true,
       data: "Generated",
-      result: tt_try,
+      result: saved_tt,
     });
   } catch (error) {
     console.log(error);
@@ -183,7 +235,20 @@ router.post("/admin/generate", async (req, res) => {
 });
 
 router.put("/admin/clear", async (req, res) => {
-  res.send("Cleared");
+  try {
+    await Timetable.deleteMany();
+    res.send({
+      status: true,
+      data: "deleted",
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: false,
+      data: "An Error Occured",
+      result: error,
+    });
+  }
 });
 
 router.get("/admin/numbers/:dept", async (req, res) => {
@@ -194,6 +259,7 @@ router.get("/admin/numbers/:dept", async (req, res) => {
     const teachers = await Teacher.find();
     const rooms = await Room.find();
     const depts = await Dept.find();
+    const tt = await Timetable.find();
 
     const dept = depts.find((el) => el.id == req.params.dept);
 
@@ -202,6 +268,7 @@ router.get("/admin/numbers/:dept", async (req, res) => {
       config.course_units = course_units.length || 0;
       config.teachers = teachers.length || 0;
       config.rooms = rooms.length || 0;
+      config.tt = JSON.parse(tt[0].tt) || [];
     } else {
       config.classes = classes.filter(
         (el) => el.class_dept == req.params.dept
