@@ -566,13 +566,16 @@ class TimeTableWeekDay {
       (el) => el.course_unit_semester === this.config.semester
     );
     let missed_course_units = [];
-    let tt = this.pushCourseUnit(course_units[0], [
-      [[], [], [], [], [], [], [], [], []],
-      [[], [], [], [], [], [], [], [], []],
-      [[], [], [], [], [], [], [], [], []],
-      [[], [], [], [], [], [], [], [], []],
-      [[], [], [], [], [], [], [], [], []],
-    ]);
+    let tt =
+      course_units.length === 0
+        ? []
+        : this.pushCourseUnit(course_units[0], [
+            [[], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], []],
+          ]);
     for (let i = 1; i < course_units.length; i++) {
       if (tt.err) {
         missed_course_units.push(course_units[i - 1]);
