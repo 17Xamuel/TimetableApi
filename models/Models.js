@@ -60,7 +60,10 @@ id(TeacherSchema);
 
 const Teacher = new mongoose.model("Teachers", TeacherSchema);
 
-//user
+/**
+ *
+ * DepartmentSchema
+ */
 const DeptSchema = mongoose.Schema({
   dept_number: {
     type: String,

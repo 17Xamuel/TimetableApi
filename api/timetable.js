@@ -566,24 +566,30 @@ class TimeTableWeekDay {
       (el) => el.course_unit_semester === this.config.semester
     );
     let missed_course_units = [];
-    let tt =
-      course_units.length === 0
-        ? []
-        : this.pushCourseUnit(course_units[0], [
-            [[], [], [], [], [], [], [], [], []],
-            [[], [], [], [], [], [], [], [], []],
-            [[], [], [], [], [], [], [], [], []],
-            [[], [], [], [], [], [], [], [], []],
-            [[], [], [], [], [], [], [], [], []],
-          ]);
-    for (let i = 1; i < course_units.length; i++) {
-      if (tt.err) {
-        missed_course_units.push(course_units[i - 1]);
+    if (course_units.length > 0) {
+      let tt = this.pushCourseUnit(course_units[0], [
+        [[], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], []],
+      ]);
+      if (course_units.length > 2) {
+        for (let i = 1; i < course_units.length; i++) {
+          if (tt.err) {
+            missed_course_units.push(course_units[i - 1]);
+          } else {
+            tt = this.pushCourseUnit(course_units[i], tt.timetable);
+          }
+        }
+        // console.log(tt);
+        return { timetable: tt.timetable, missed_course_units };
       } else {
-        tt = this.pushCourseUnit(course_units[i], tt.timetable);
+        return { timetable: tt.timetable, missed_course_units };
       }
+    } else {
+      return { timetable: [], missed_course_units: [] };
     }
-    return { timetable: tt, missed_course_units };
   }
 }
 module.exports = { TimeTableWeekDay };

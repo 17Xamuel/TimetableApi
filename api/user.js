@@ -200,16 +200,17 @@ router.post("/admin/generate", async (req, res) => {
     const course_units = await CourseUnit.find();
     const teachers = await Teacher.find();
     const rooms = await Room.find();
-    config.classes = classes || [];
-    config.course_units = course_units || [];
-    config.teachers = teachers || [];
-    config.rooms = rooms || [];
+    config.classes = classes;
+    config.course_units = course_units;
+    config.teachers = teachers;
+    config.rooms = rooms;
     config.semester = req.body.semester;
 
     const tt_weekday = new TimeTableWeekDay(config);
 
     const tt = tt_weekday.timeTableWeekDay;
 
+    console.log(tt);
     const generated_tt = new Timetable({
       tt: JSON.stringify(tt.timetable),
       missed: JSON.stringify(tt.missed_course_units),
@@ -251,7 +252,7 @@ router.put("/admin/clear", async (req, res) => {
   }
 });
 
-router.get("/admin/numbers/:dept", async (req, res) => {
+router.get("/admin/numbers", async (req, res) => {
   const config = {};
   try {
     const classes = await Class.find();
@@ -261,30 +262,17 @@ router.get("/admin/numbers/:dept", async (req, res) => {
     const depts = await Dept.find();
     const tt = await Timetable.find();
 
-    const dept = depts.find((el) => el.id == req.params.dept);
-
-    if (parseInt(dept.dept_number) == 1) {
-      config.classes = classes.length || 0;
-      config.course_units = course_units.length || 0;
-      config.teachers = teachers.length || 0;
-      config.rooms = rooms.length || 0;
-      config.tt = JSON.parse(tt[0].tt) || [];
-    } else {
-      config.classes = classes.filter(
-        (el) => el.class_dept == req.params.dept
-      ).length;
-      config.course_units = course_units.filter(
-        (el) => el.course_unit_dept == req.params.dept
-      ).length;
-      config.teachers = teachers.filter(
-        (el) => el.teacher_dept == req.params.dept
-      ).length;
-    }
+    config.classes = classes || [];
+    config.course_units = course_units || [];
+    config.teachers = teachers || [];
+    config.rooms = rooms || [];
+    config.depts = depts || [];
+    config.tt = tt;
 
     res.send({
       status: true,
       data: "success",
-      result: config,
+      result: config,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
     });
   } catch (error) {
     res.send({
